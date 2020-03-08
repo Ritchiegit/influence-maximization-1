@@ -1,9 +1,10 @@
+# coding=utf-8
 '''
 File for Linear Threshold model (LT).
 For directed graph G = (nodes, edges, weights) and
 set of thresholds lambda for each node, LT model works as follows:
 Initially set S of nodes is activated. For all outgoing neighbors,
-we compare sum of edge weights from activated nodes and node thresholds.
+**we compare sum of edge weights from activated nodes and node thresholds.**
 If threshold becomes less than sum of edge weights for any given vertex,
 then this vertex becomes active for the following iterations.
 LT stops when no activation happens.
@@ -41,7 +42,7 @@ def randomWeights(G):
         for num, (v1, v2, edata) in enumerate(in_edges):
             total += edata['weight']*ew[num]
         for num, (v1, v2, _) in enumerate(in_edges):
-            Ew[(v1,v2)] = ew[num]/total
+            Ew[(v1,v2)] = ew[num]/total  #  还是有个归一化的过程
     return Ew
 
 def checkLT(G, Ew, eps = 1e-4):
@@ -95,10 +96,10 @@ def avgLT(G, S, Ew, iterations):
     avgSize = 0
     progress = 1
     for i in range(iterations):
-        if i == round(iterations*.1*progress) - 1:
-            print 10*progress, '% done'
+        if i == round(iterations*.1*progress) - 1:  # 输出完成度的百分比
+            print(10*progress, '% done')
             progress += 1
-        T = runLT(G, S, Ew)
-        avgSize += len(T)/iterations
+        T = runLT(G, S, Ew)  # 只是多次迭代 也没有对 进行更新
+        avgSize += len(T)/iterations  # average diffusion results 平均的结果 最后才是加出来的结果
 
     return avgSize
